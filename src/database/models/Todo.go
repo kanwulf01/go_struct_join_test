@@ -41,6 +41,10 @@ func Get(id string) (Todo, bool) {
 
 func GetAll() ([]Todo) {
 	db := database.GetConnection()
+	sizerows, err := db.Query("select count(*) from (SELECT * FROM todos) as subconsul;")
+
+	fmt.Println(sizerows)
+
 	rows, err := db.Query("SELECT * FROM todos ORDER BY id")
 	if err != nil {
 		log.Fatal(err)

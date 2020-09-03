@@ -139,22 +139,31 @@ func GetTodos(w http.ResponseWriter, req *http.Request) {
 }
 
 //Funcion que retorna un Get con 1 Preguntas y todas sus diferentes Respuestas
-func GetPreguntaXrespuestas(w http.ResponseWriter, req *http.Request) {
-	fmt.Println("Request Get")
-	var pregunta models.Pregunta
-	var respuestas []models.Respuesta 
-	pregunta, respuestas = models.GetPreguntaxRespuesta()
 
-	var res = ResponseJoin{pregunta, respuestas}
-	json, _ := json.Marshal(res)
+func GetPreguntasXrespuestas(w http.ResponseWriter, req *http.Request) {
+	fmt.Println("Request Get")
+	var datos []models.Response
+	datos = models.GetPreguntasxRespuesta()
+	json, _ := json.Marshal(datos)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(json)
+	fmt.Println(datos)
+//	fmt.Println(respuestas)
+}
+
+func GetPreguntaXrespuestas1(w http.ResponseWriter, req *http.Request) {
+	fmt.Println("Request Get")
+	//var pregunta models.Pregunta
+	var respuestas []models.ResponseNormal 
+	respuestas = models.GetPreguntaxRespuesta1()
+	json, _ := json.Marshal(respuestas)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(json)
 
-
-	fmt.Println(pregunta)
-	fmt.Println(respuestas)
 }
+
 
 //GET A PREGUNTAS
 func GetPreguntas(w http.ResponseWriter, req *http.Request) {
@@ -336,4 +345,17 @@ func CreateRespuesta(w http.ResponseWriter, req *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(json)
 	return
+}
+
+func CorrectAnswers(w http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+	id := vars["res"]
+
+	resp := models.RespuestaCorrecta(id)
+	json, _ := json.Marshal(resp)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(json)
+	return
+	
 }
