@@ -9,6 +9,7 @@ import (
 	"strings"
 	"fmt"
 	"github.com/gorilla/mux"
+	"strconv"
 )
 
 type Data struct {
@@ -349,10 +350,16 @@ func CreateRespuesta(w http.ResponseWriter, req *http.Request) {
 
 func CorrectAnswers(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
+	idp := vars["idp"]
 	id := vars["res"]
 
-	resp := models.RespuestaCorrecta(id)
+	i,_ := strconv.Atoi(idp)
+
+
+
+	resp := models.RespuestaCorrecta(i,id)
 	json, _ := json.Marshal(resp)
+	
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(json)

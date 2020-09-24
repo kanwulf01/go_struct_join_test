@@ -27,7 +27,7 @@ func main() {
 	apiRouter.HandleFunc("/createRespuesta", api.CreateRespuesta).Methods("POST")
 	apiRouter.HandleFunc("/getPxR", api.GetPreguntasXrespuestas).Methods("GET")
 	apiRouter.HandleFunc("/getPreguntas", api.GetPreguntaXrespuestas1).Methods("GET")
-	apiRouter.HandleFunc("/correcta/{res}", api.CorrectAnswers).Methods("GET")
+	apiRouter.HandleFunc("/correcta/{idp}/{res}", api.CorrectAnswers).Methods("GET")
 
 	fmt.Printf("Server running at port %s", port)
 	http.ListenAndServe(":" + port, router)

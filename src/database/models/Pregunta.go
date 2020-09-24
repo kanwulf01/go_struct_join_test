@@ -297,7 +297,8 @@ func GetPreguntaxRespuesta1() ([]ResponseNormal) {
 
 		err := rows.Scan(&ID,&nombrep,&descripcionp,&respuesta, &IDS, &answer, &idp)
 		if err != nil {
-			log.Fatal(err)
+			log.Println("cannot read current row")
+			return nil
 		}
 
 		//Llena Objecto Pregunta
@@ -322,19 +323,19 @@ func GetPreguntaxRespuesta1() ([]ResponseNormal) {
 }
 
 func pointer(xPtr *string) {//pass address
-	*xPtr = ""//new valye to the pointer
+	*xPtr = "hi"//new valye to the pointer
   } 
 
 func RespuestaCorrecta(id int, res string) (string) {
 
 	db := database.GetConnection()
-	
+	//var response string
 	rows,err := db.Query("SELECT respuesta FROM pregunta where id=$1 and respuesta = $2",id,res)
 
 	if err != nil{
 		log.Fatal(err)
 	}
-
+	var response string
 	var respuesta string
 	for rows.Next() {
 
@@ -343,13 +344,19 @@ func RespuestaCorrecta(id int, res string) (string) {
 			log.Fatal(err)
 			
 		}
-		if respuesta == "" {
-			fmt.Println("No encontro pregunta")
-			res := "No se encontro"
-			pointer(&res)
+		
+		
+		fmt.Println(respuesta)
+		if respuesta != "" {
+			fmt.Println("encontro pregunta")
+			response = "Respuesta Correcta"
+			//pointer(&response)
 		}
+		response = "Respuesta Incorrecta"
+		
+
 	}
 
-	return respuesta
+	return response
 	
 }
